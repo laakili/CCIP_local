@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plateforme Inondation — CRTS</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <path d="M4 24 Q9 18 14 24 Q19 30 24 24 Q29 18 34 24" stroke="#2196f3" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M4 28 Q9 22 14 28 Q19 34 24 28 Q29 22 34 28" stroke="#64b5f6" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/>
+        <circle cx="18" cy="12" r="5" fill="#2196f3" opacity=".85"/>
+        <path d="M18 7V4M22 9l2-2M14 9l-2-2" stroke="#2196f3" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span>Plateforme Gestion de Crise Inondation</span>
+    </div>
+    <div class="badge-crts">CRTS · DEP</div>
+  </div>
+</header>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+
+  <!-- PANNEAU GAUCHE — Formulaire -->
+  <aside class="panel-left">
+    <h2>🛰️ Nouveau traitement</h2>
+
+    <form id="jobForm">
+
+      <!-- Mode de traitement -->
+      <div class="field-group">
+        <label>Mode de détection</label>
+        <div class="toggle-group">
+          <button type="button" class="toggle-btn active" data-mode="single" onclick="setMode('single')">
+            Image unique (TP2)
+          </button>
+          <button type="button" class="toggle-btn" data-mode="diff" onclick="setMode('diff')">
+            Avant / Après (TP1)
+          </button>
+        </div>
+      </div>
+
+      <!-- Images Sentinel-1 -->
+      <div class="field-group">
+        <label for="img_after">Image après inondation <span class="req">*</span></label>
+        <input type="text" id="img_after" placeholder="/chemin/vers/S1_AFTER.zip" required>
+        <small>Sentinel-1 GRD — fichier .zip ou .SAFE</small>
+      </div>
+
+      <div class="field-group" id="beforeGroup" style="display:none">
+        <label for="img_before">Image avant inondation</label>
+        <input type="text" id="img_before" placeholder="/chemin/vers/S1_BEFORE.zip">
+        <small>Image de référence avant la crue</small>
+      </div>
+
+      <!-- Zone d'intérêt -->
+      <div class="field-group">
+        <label>Zone d'intérêt (AOI)</label>
+        <div class="aoi-grid">
+          <div>
+            <label class="sub">Lon Min</label>
+            <input type="number" id="lon_min" value="-6.8" step="0.01">
+          </div>
+          <div>
+            <label class="sub">Lat Min</label>
+            <input type="number" id="lat_min" value="33.5" step="0.01">
+          </div>
+          <div>
+            <label class="sub">Lon Max</label>
+            <input type="number" id="lon_max" value="-4.8" step="0.01">
+          </div>
+          <div>
+            <label class="sub">Lat Max</label>
+            <input type="number" id="lat_max" value="35.8" step="0.01">
+          </div>
+        </div>
+        <small>WGS84 — El Gharb par défaut</small>
+      </div>
+
+      <!-- Paramètres avancés -->
+      <details class="advanced">
+        <summary>⚙️ Paramètres avancés</summary>
+
+        <div class="field-group">
+          <label for="polarisation">Polarisation</label>
+          <select id="polarisation">
+            <option value="VH" selected>VH (recommandé pour eau)</option>
+            <option value="VV">VV</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="seuil_db">Seuil de détection (dB)</label>
+          <div class="slider-row">
+            <input type="range" id="seuil_db" min="-40" max="-10" step="1" value="-26"
+                   oninput="document.getElementById('seuil_val').textContent=this.value+' dB'">
+            <span id="seuil_val">-26 dB</span>
+          </div>
+          <small>Valeur typique pour l'eau : -30 à -20 dB</small>
+        </div>
+
+        <div class="field-group">
+          <label for="pixel_spacing">Résolution (m)</label>
+          <select id="pixel_spacing">
+            <option value="10" selected>10 m</option>
+            <option value="20">20 m</option>
+            <option value="30">30 m</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="dem">Modèle Numérique de Terrain</label>
+          <select id="dem">
+            <option value="SRTM 1Sec HGT" selected>SRTM 1Sec (30m) — recommandé</option>
+            <option value="SRTM 3Sec">SRTM 3Sec (90m)</option>
+            <option value="Copernicus 30m Global DEM">Copernicus 30m</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="area_min_ha">Surface min. polygone (ha)</label>
+          <input type="number" id="area_min_ha" value="0.5" min="0.1" step="0.1">
+          <small>Polygones plus petits = faux positifs supprimés</small>
+        </div>
+
+        <div class="field-group">
+          <label for="communes_shp">Couche communes (Shapefile)</label>
+          <input type="text" id="communes_shp" placeholder="(optionnel) /chemin/communes.shp">
+          <small>Laisser vide → GADM Maroc automatiquement</small>
+        </div>
+      </details>
+
+      <button type="submit" class="btn-primary" id="submitBtn">
+        🚀 Lancer le traitement
+      </button>
+    </form>
+  </aside>
+
+  <!-- PANNEAU DROIT — Jobs & Résultats -->
+  <main class="panel-right">
+
+    <!-- Job actif -->
+    <section id="activeJob" style="display:none">
+      <div class="job-header">
+        <h2>⏳ Traitement en cours</h2>
+        <span id="jobId" class="job-id"></span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progressBar" style="width:0%"></div>
+      </div>
+      <div id="progressLabel" class="progress-label">0%</div>
+      <div id="logsBox" class="logs-box"></div>
+      <div id="resultButtons" style="display:none" class="result-btns">
+        <a id="btnRapport" href="#" target="_blank" class="btn-result">📄 Voir le rapport</a>
+        <a id="btnCSV" href="#" class="btn-result">📥 Télécharger CSV</a>
+      </div>
+    </section>
+
+    <!-- Stats du job terminé -->
+    <section id="statsSection" style="display:none">
+      <h2>📊 Résultats</h2>
+      <div class="stats-grid" id="statsGrid"></div>
+    </section>
+
+    <!-- Historique des jobs -->
+    <section>
+      <h2>🗂️ Historique des traitements</h2>
+      <div id="jobsList" class="jobs-list">
+        <div class="empty-state">Aucun traitement lancé</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+/* ── Reset & base ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  font-family: 'Segoe UI', system-ui, Arial, sans-serif;
+  background: #0b1422;
+  color: #d0dce8;
+  min-height: 100vh;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+header {
+  background: linear-gradient(135deg, #0d2137 0%, #0a3558 100%);
+  border-bottom: 2px solid #1565c0;
+  padding: 0 24px;
+  height: 58px;
+  position: sticky; top: 0; z-index: 100;
+}
+.header-inner {
+  max-width: 1400px; margin: 0 auto;
+  height: 100%; display: flex; align-items: center; justify-content: space-between;
+}
+.logo { display: flex; align-items: center; gap: 12px; font-size: 1.1em; font-weight: 600; color: #e3f2fd; }
+.badge-crts {
+  background: #0d47a1; color: #90caf9;
+  padding: 4px 12px; border-radius: 20px; font-size: .8em; font-weight: 600;
+}
+
+/* ── Layout ─────────────────────────────────────────────────── */
+.layout {
+  max-width: 1400px; margin: 0 auto;
+  display: grid; grid-template-columns: 380px 1fr;
+  gap: 0; min-height: calc(100vh - 58px);
+}
+
+/* ── Panel gauche ───────────────────────────────────────────── */
+.panel-left {
+  background: #0f1e30;
+  border-right: 1px solid #1a3050;
+  padding: 24px 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 58px);
+  position: sticky; top: 58px;
+}
+.panel-left h2 { color: #64b5f6; font-size: 1em; margin-bottom: 20px; font-weight: 600; }
+
+/* ── Panel droit ────────────────────────────────────────────── */
+.panel-right { padding: 24px; overflow-y: auto; }
+.panel-right section { margin-bottom: 28px; }
+.panel-right h2 {
+  color: #64b5f6; font-size: .95em; font-weight: 600;
+  border-bottom: 1px solid #1a3050; padding-bottom: 10px; margin-bottom: 16px;
+}
+
+/* ── Formulaire ─────────────────────────────────────────────── */
+.field-group { margin-bottom: 16px; }
+.field-group label { display: block; font-size: .82em; color: #78909c; margin-bottom: 5px; font-weight: 500; }
+.field-group label.sub { color: #546e7a; font-size: .78em; }
+.field-group input[type=text],
+.field-group input[type=number],
+.field-group select {
+  width: 100%; padding: 8px 10px;
+  background: #0d2137; border: 1px solid #1a3a55; border-radius: 6px;
+  color: #d0dce8; font-size: .88em; outline: none;
+  transition: border-color .2s;
+}
+.field-group input:focus, .field-group select:focus { border-color: #2196f3; }
+.field-group small { display: block; color: #455a64; font-size: .78em; margin-top: 4px; }
+.req { color: #ef5350; }
+
+.aoi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.slider-row { display: flex; align-items: center; gap: 12px; }
+.slider-row input[type=range] { flex: 1; accent-color: #2196f3; }
+.slider-row span { color: #4fc3f7; font-weight: 600; font-size: .9em; min-width: 56px; }
+
+/* ── Toggle mode ────────────────────────────────────────────── */
+.toggle-group { display: flex; border: 1px solid #1a3a55; border-radius: 8px; overflow: hidden; }
+.toggle-btn {
+  flex: 1; padding: 8px 4px; background: transparent;
+  color: #78909c; border: none; cursor: pointer; font-size: .83em; transition: all .2s;
+}
+.toggle-btn.active { background: #1565c0; color: #e3f2fd; font-weight: 600; }
+
+/* ── Advanced ───────────────────────────────────────────────── */
+.advanced {
+  border: 1px solid #1a3a55; border-radius: 8px;
+  padding: 0; margin-bottom: 18px; overflow: hidden;
+}
+.advanced summary {
+  padding: 10px 14px; cursor: pointer; color: #78909c;
+  font-size: .85em; user-select: none; list-style: none;
+  background: #0d2137;
+}
+.advanced summary::-webkit-details-marker { display: none; }
+.advanced[open] summary { color: #64b5f6; border-bottom: 1px solid #1a3a55; }
+.advanced > .field-group,
+.advanced details > .field-group { padding: 0 14px; }
+.advanced > .field-group:first-of-type { padding-top: 14px; }
+.advanced > .field-group:last-of-type { padding-bottom: 14px; }
+details .field-group { padding: 8px 14px 0; }
+details .field-group:last-child { padding-bottom: 14px; }
+
+/* ── Boutons ────────────────────────────────────────────────── */
+.btn-primary {
+  width: 100%; padding: 12px; margin-top: 8px;
+  background: linear-gradient(135deg, #1565c0, #0d47a1);
+  color: #fff; border: none; border-radius: 8px;
+  font-size: .95em; font-weight: 600; cursor: pointer;
+  transition: opacity .2s, transform .1s;
+}
+.btn-primary:hover { opacity: .9; }
+.btn-primary:active { transform: scale(.98); }
+.btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+
+.result-btns { display: flex; gap: 12px; margin-top: 14px; }
+.btn-result {
+  padding: 9px 18px; border-radius: 7px;
+  background: #0d3a5c; color: #90caf9; text-decoration: none;
+  font-size: .88em; font-weight: 600; border: 1px solid #1565c0;
+  transition: background .2s;
+}
+.btn-result:hover { background: #1565c0; color: #fff; }
+
+/* ── Progress bar ───────────────────────────────────────────── */
+.job-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.job-id { font-size: .75em; color: #455a64; font-family: monospace; background: #0d2137; padding: 2px 8px; border-radius: 4px; }
+.progress-bar-wrap {
+  height: 8px; background: #0d2137; border-radius: 4px; overflow: hidden; border: 1px solid #1a3050;
+}
+.progress-bar {
+  height: 100%; background: linear-gradient(90deg, #1565c0, #2196f3);
+  border-radius: 4px; transition: width .6s ease;
+}
+.progress-label { font-size: .82em; color: #78909c; margin-top: 6px; margin-bottom: 12px; }
+
+/* ── Logs ───────────────────────────────────────────────────── */
+.logs-box {
+  background: #070e18; border: 1px solid #0d2137; border-radius: 8px;
+  padding: 12px 14px; font-family: 'Cascadia Code', 'Fira Code', monospace;
+  font-size: .78em; height: 220px; overflow-y: auto; color: #78909c;
+}
+.log-info  { color: #546e7a; }
+.log-snap  { color: #26a69a; }
+.log-qgis  { color: #7986cb; }
+.log-warn  { color: #ffa726; }
+.log-error { color: #ef5350; }
+.log-ts    { color: #37474f; margin-right: 6px; }
+
+/* ── Stats grid ─────────────────────────────────────────────── */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.stat-card {
+  background: #0f1e30; border: 1px solid #1a3050; border-radius: 10px;
+  padding: 18px; text-align: center;
+}
+.stat-card .val { font-size: 1.8em; font-weight: 700; color: #2196f3; }
+.stat-card .lbl { font-size: .78em; color: #546e7a; margin-top: 4px; }
+
+/* ── Jobs list ──────────────────────────────────────────────── */
+.jobs-list { display: flex; flex-direction: column; gap: 10px; }
+.job-card {
+  background: #0f1e30; border: 1px solid #1a3050; border-radius: 9px;
+  padding: 14px 16px; cursor: pointer; transition: border-color .2s;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.job-card:hover { border-color: #1565c0; }
+.job-card .jc-left { display: flex; flex-direction: column; gap: 4px; }
+.job-card .jc-id { font-family: monospace; font-size: .8em; color: #546e7a; }
+.job-card .jc-info { font-size: .85em; color: #90a4ae; }
+.job-card .jc-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+
+.status-badge {
+  padding: 2px 10px; border-radius: 12px; font-size: .75em; font-weight: 600;
+}
+.status-pending   { background: #1a2a3a; color: #78909c; }
+.status-running   { background: #0d3a5c; color: #4fc3f7; animation: pulse .8s infinite alternate; }
+.status-done      { background: #1b3a1e; color: #81c784; }
+.status-error     { background: #3a1010; color: #ef9a9a; }
+.status-cancelled { background: #2a1e0a; color: #ffb74d; }
+
+@keyframes pulse { from { opacity:.7; } to { opacity:1; } }
+
+.mini-bar-wrap { width: 100px; height: 4px; background: #0d2137; border-radius: 2px; }
+.mini-bar { height: 100%; background: #1565c0; border-radius: 2px; transition: width .5s; }
+
+.empty-state { color: #37474f; font-size: .88em; padding: 20px; text-align: center; }
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0b1422; }
+::-webkit-scrollbar-thumb { background: #1a3050; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #1565c0; }

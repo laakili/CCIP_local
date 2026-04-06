@@ -1,0 +1,23 @@
+# Résultats de traitement
+platform/results/
+data/sentinel/
+data/gadm/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Logs
+*.log
+
+# Fichiers lourds
+*.zip
+*.hgt
+*.tar.gz
+*.tar
